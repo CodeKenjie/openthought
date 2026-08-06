@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
+  has_many :sessions, dependent: :destroy
 
   before_validation :normalize_attributes
 
@@ -10,6 +11,13 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 8 }, allow_nil: true
   validates :password_confirmation, presence: true, on: :create
   validates :terms_accepted, acceptance: true
+
+  public
+
+  def self.authenticate_by_login(login:, password:)
+    user = find_by(email: login) || find_by(username: login)
+    user&.authenticate(password)
+  end
 
   private
 
