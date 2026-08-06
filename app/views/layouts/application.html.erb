@@ -24,7 +24,14 @@
   </head>
 
   <body>
-    <main>
+    <main class="w-screen h-screen">
+      <% flash.each do |type, message| %>
+        <div class="p-3 flex justify-center items-center w-full h-fit transition-opacity duration-200" data-controller="flash">
+          <span class=" p-3 text-xl text-white border w-fit rounded-xl <%= type == 'notice' ? 'bg-green-500 border-green-100' : 'bg-red-500 border-red-100' %>">
+            <%= message %>
+          </span>
+        </div>
+      <% end %>
       <%= yield %>
     </main>
   </body>

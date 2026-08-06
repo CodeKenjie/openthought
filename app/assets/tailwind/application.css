@@ -23,14 +23,12 @@
 }
 
 .form-submit {
-    @apply w-fit;
+    @apply w-fit curso-pointer;
     @apply text-2xl text-white font-bold p-2 px-4 bg-purple-800 rounded-xl;
-    @apply opacity-80 hover:opacity-100
+    @apply opacity-80 hover:opacity-100;
 }
 
 .btn {
-    @apply w-fit;
+    @apply w-fit cursor-pointer;
     @apply text-2xl text-white font-bold p-2 px-4 bg-purple-800 rounded-xl;
-    @apply opacity-80 hover:opacity-100
 }
-

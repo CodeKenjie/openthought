@@ -10,8 +10,12 @@ export default class extends Controller {
         "email",
         "emailCheckingLabel",
         "password",
+        "passIcon",
+        "passwordCheckingLabel",
         "confirmPassword",
-        "termsAccepted"
+        "confPassIcon",
+        "passwordMatchLabel",
+        "termsAccepted",
     ]
 
     connect() {
@@ -45,11 +49,9 @@ export default class extends Controller {
     }
 
     validateCurrentStep(){
+        let isValid = false
         if(this.currentStep === 0){
-            return(
-                this.firstNameTarget.value.trim() !== "" && 
-                this.lastNameTarget.value.trim() !== ""
-            )
+            isValid = this.firstNameTarget.value.trim() !== "" && this.lastNameTarget.value.trim() !== ""
         }
 
         if(this.currentStep === 1){
@@ -57,19 +59,14 @@ export default class extends Controller {
             const email = this.emailTarget.value.trim()
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-            return(
-                username !== "" && email !== "" && emailRegex.test(email)
-            )
+            isValid = username !== "" && email !== "" && emailRegex.test(email)
         }
 
         if(this.currentStep === 2){
-            return(
-                this.passwordTarget.value.trim() !== "" &&
-                this.confirmPasswordTarget.value.trim() !== ""
-            )
+            isValid = this.passwordTarget.value.trim() !== "" && this.confirmPasswordTarget.value.trim() !== ""
         }
 
-        return true
+        return isValid
     }
 
     async checkUsername() {
@@ -84,13 +81,8 @@ export default class extends Controller {
             try {
                 const res = await fetch(`/check_username?username=${encodeURIComponent(username)}`)
                 const data = await res.json()
-                if(data.available){
-                    this.usernameCheckingLabelTarget.textContent = "Available"
-                    this.usernameCheckingLabelTarget.classList.add("text-green-800")
-                } else {
-                    this.usernameCheckingLabelTarget.textContent = "not Available"
-                    this.usernameCheckingLabelTarget.classList.add("text-red-800")
-                }
+                this.usernameCheckingLabelTarget.textContent = data.available ? "Available" : "Not Available"
+                this.usernameCheckingLabelTarget.style.color = data.available ? "green" : "red"
             } catch (err) {
                 console.error(err)
             }
@@ -117,16 +109,72 @@ export default class extends Controller {
             try {
                 const res = await fetch(`/check_email?email=${encodeURIComponent(email)}`)
                 const data = await res.json()
-                if(data.available){
-                    this.emailCheckingLabelTarget.textContent = "Available"
-                    this.emailCheckingLabelTarget.classList.add("text-green-800")
-                } else {
-                    this.emailCheckingLabelTarget.textContent = "not Available"
-                    this.emailCheckingLabelTarget.classList.add("text-red-800")
-                }
+                this.emailCheckingLabelTarget.textContent = data.available ? "Available" : "Not Available"
+                this.emailCheckingLabelTarget.style.color = data.available ? "green" : "red"
             } catch(err){
                 console.error(err)
             }
         }, 500)
+    }
+
+    togglePassword(event){
+        const button = event.currentTarget
+        const field = this[`${button.dataset.targetField}Target`]
+        const icon = this[`${button.dataset.iconTarget}Target`]
+
+        if(field.type === "password"){
+            field.type = "text"
+            icon.src = button.dataset.hideIcon
+        } else {
+            field.type = "password"
+            icon.src = button.dataset.showIcon
+        }
+    }
+
+    checkPassword(){
+        const password = this.passwordTarget.value
+        const label = this.passwordCheckingLabelTarget
+
+        const rules = {
+            length: password.length >= 8,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            number: /[0-9]/.test(password),
+            special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+        }
+
+        const errors = []
+
+        if(!rules.length) errors.push("At least 8 characters")
+        if(!rules.uppercase) errors.push("At least 1 uppercase letter")
+        if(!rules.lowercase) errors.push("At least 1 lowercase letter")
+        if(!rules.number) errors.push("At least 1 number")
+        if(!rules.special) errors.push("At least 1 special characters")
+
+        label.classList.remove("text-red-800", "text-green-800", "text-yellow-800")
+
+        if (errors.length === 0) {
+            label.textContent = "Strong Password"
+            label.classList.add("text-green-800")
+        } else if (errors.length <= 2) {
+            label.textContent = "Need: " + errors.join(", ")
+            label.classList.add("text-yellow-800")
+        } else {
+            label.textContent = "Need: " + errors.join(", ")
+            label.classList.add("text-red-800")
+        }
+    }
+
+    confirmPassword(){
+        const password = this.passwordTarget.value
+        const confPass = this.confirmPasswordTarget.value
+
+        if(confPass.length === 0){
+            this.confirmPasswordTarget.classList.remove("border-green-800")
+        }
+
+        if(confPass && password !== confPass){
+            this.confirmPasswordTarget.classList.add("border-green-800")
+        }
     }
 }

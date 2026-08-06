@@ -8,8 +8,12 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to root_path, notice: "Account successfully created!"
     else
+      flash.now[:error] = @user.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def check_username
   end
 
   private

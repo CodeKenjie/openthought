@@ -23,7 +23,7 @@
       %>
     </div>
     <div class="flex w-full justify-end">
-      <button class="btn" type="button" data-action="registration#next">Next</button>
+      <button class="btn opacity-75 hover:opacity-100" type="button" data-action="registration#next">Next</button>
     </div>
   </div>
 
@@ -66,8 +66,8 @@
       </div>
     </div>
     <div class="flex gap-2 w-full justify-end">
-      <button class="btn" type="button" data-action="registration#previous">Previous</button>
-      <button class="btn" type="button" data-action="registration#next">Next</button>
+      <button class="btn opacity-75 hover:opacity-100" type="button" data-action="registration#previous">Previous</button>
+      <button class="btn opacity-75 hover:opacity-100" type="button" data-action="registration#next">Next</button>
     </div>
   </div>
 
@@ -77,32 +77,72 @@
         "Password",
         class: "form-label"
       %>
-      <%= form.password_field :password, 
-        required: true,
-        class: "form-input",
-        data: { registration_target: "password" }
-      %>
+      <div class="relative flex items-center gap-2 overflow-x-hidden">
+        <%= form.password_field :password, 
+          required: true,
+          class: "form-input",
+          style: "padding-right: 5.5rem",
+          data: { 
+            registration_target: "password",
+            action: "input->registration#checkPassword"
+          }
+        %>
+      <button type="button" 
+        class="absolute right-4 w-[3rem] h-[3rem] cursor-pointer" 
+        data-action="click->registration#togglePassword"
+        data-target-field="password" 
+        data-icon-target="passIcon" 
+        data-show-icon="<%= asset_path('show.svg') %>" 
+        data-hide-icon="<%= asset_path('hide.svg') %>"
+      >
+          <%= image_tag "show.svg",
+            class: "w-full h-full",
+            data: { registration_target: "passIcon" }
+            %>
+        </button>
+      </div>
+      <p data-registration-target="passwordCheckingLabel" class="px-5 text-sm font-bold"></p>
     </div>
     <div class="form-div">
       <%= form.label :password_confirmation, 
         "Confirm Password",
         class: "form-label"
       %>
-      <%= form.password_field :password_confirmation, 
-        required: true,
-        class: "form-input",
-        data: { registration_target: "confirmPassword" }
-      %>
+      <div class="relative flex items-center gap-2 overflow-x-hidden">
+        <%= form.password_field :password_confirmation, 
+          required: true,
+          class: "form-input",
+          data: { 
+            registration_target: "confirmPassword",
+            action: "input->registration#confirmPassword"
+          }
+        %>
+      <button type="button" 
+        class="absolute right-4 w-[3rem] h-[3rem] cursor-pointer" 
+        data-action="click->registration#togglePassword"
+        data-target-field="confirmPassword" 
+        data-icon-target="confPassIcon" 
+        data-show-icon="<%= asset_path('show.svg') %>" 
+        data-hide-icon="<%= asset_path('hide.svg') %>"
+      >
+          <%= image_tag "show.svg",
+            class: "w-full h-full",
+            data: { registration_target: "confPassIcon" }
+          %>
+        </button>
+      </div>
     </div>
-    <div class="flex gap-2">
+    <div class="flex items-center gap-2">
       <%= form.check_box :terms_accepted %>
       <%= form.label :terms_accepted,
         "I accept the terms and conditions",
         class: "form-label" %>
     </div>
     <div class="flex gap-2 w-full justify-end">
-      <button class="btn" type="button" data-action="registration#previous">Previous</button>
-      <%= form.submit "Submit", class: "form-submit"%>
+      <button class="btn opacity-75 hover:opacity-100" type="button" data-action="registration#previous">Previous</button>
+      <%= form.submit "Submit", 
+        class: "form-submit"
+      %>
     </div>
   </div>
 <% end %>
