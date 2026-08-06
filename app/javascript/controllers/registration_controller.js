@@ -6,7 +6,9 @@ export default class extends Controller {
         "firstName",
         "lastName",
         "username",
+        "usernameCheckingLabel",
         "email",
+        "emailCheckingLabel",
         "password",
         "confirmPassword",
         "termsAccepted"
@@ -26,9 +28,6 @@ export default class extends Controller {
     }
 
     previous() {
-        if(!this.validateCurrentStep()){
-            return
-        }
         if(this.currentStep > 0){
             this.currentStep--
             this.showStep()
@@ -54,9 +53,12 @@ export default class extends Controller {
         }
 
         if(this.currentStep === 1){
+            const username = this.usernameTarget.value.trim()
+            const email = this.emailTarget.value.trim()
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
             return(
-                this.usernameTarget.value.trim() !== "" &&
-                this.emailTarget.value.trim() !== ""
+                username !== "" && email !== "" && emailRegex.test(email)
             )
         }
 
@@ -68,5 +70,63 @@ export default class extends Controller {
         }
 
         return true
+    }
+
+    async checkUsername() {
+        clearTimeout(this.usernameTimeout)
+
+        this.usernameTimeout = setTimeout(async () => {
+            const username = this.usernameTarget.value
+            if (username.length < 3){
+                this.usernameCheckingLabelTarget.textContent = ""
+                return
+            }
+            try {
+                const res = await fetch(`/check_username?username=${encodeURIComponent(username)}`)
+                const data = await res.json()
+                if(data.available){
+                    this.usernameCheckingLabelTarget.textContent = "Available"
+                    this.usernameCheckingLabelTarget.classList.add("text-green-800")
+                } else {
+                    this.usernameCheckingLabelTarget.textContent = "not Available"
+                    this.usernameCheckingLabelTarget.classList.add("text-red-800")
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        }, 500)
+    }
+
+    checkEmail() {
+        clearTimeout(this.emailTimeout)
+
+        this.emailTimeout = setTimeout(async () => {
+            const email = this.emailTarget.value.trim()
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+            if (email === "") {
+                this.emailCheckingLabelTarget.textContent = ""
+                return
+            }
+
+            if (!emailRegex.test(email)) {
+                this.emailCheckingLabelTarget.textContent = ""
+                return
+            }
+
+            try {
+                const res = await fetch(`/check_email?email=${encodeURIComponent(email)}`)
+                const data = await res.json()
+                if(data.available){
+                    this.emailCheckingLabelTarget.textContent = "Available"
+                    this.emailCheckingLabelTarget.classList.add("text-green-800")
+                } else {
+                    this.emailCheckingLabelTarget.textContent = "not Available"
+                    this.emailCheckingLabelTarget.classList.add("text-red-800")
+                }
+            } catch(err){
+                console.error(err)
+            }
+        }, 500)
     }
 }
