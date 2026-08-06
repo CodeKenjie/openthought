@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+.form-container {
+    @apply w-full max-w-[40rem];
+    @apply flex flex-col gap-3 bg-white p-10 rounded-xl shadow;
+}
+
+.form {
+    @apply flex flex-col gap-5
+}
+
+.form-div {
+    @apply flex flex-col;
+}
+
+.form-label {
+    @apply text-xl font-semibold bg-white w-fit px-1;
+}
+
+.form-input {
+    @apply w-full;
+    @apply text-xl p-3 border border-gray-300 rounded-xl bg-white focus:outline-none;
+}
+
+.form-submit {
+    @apply w-fit;
+    @apply text-2xl text-white font-bold p-2 px-4 bg-purple-800 rounded-xl;
+    @apply opacity-80 hover:opacity-100
+}
+
+.btn {
+    @apply w-fit;
+    @apply text-2xl text-white font-bold p-2 px-4 bg-purple-800 rounded-xl;
+    @apply opacity-80 hover:opacity-100
+}
+
