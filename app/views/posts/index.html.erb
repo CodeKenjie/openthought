@@ -1,9 +1,14 @@
 <div class="flex flex-col justify-center items-center p-5">
-  <%= form_with model: @post, class: "p-5 bg-white rounded-2xl w-full max-w-[50em]" do |form| %>
+  <%= form_with model: @post, class: "flex flex-col gap-2 p-5 bg-white rounded-4xl w-full max-w-[50em] shadow" do |form| %>
     <%= form.text_area :body, 
       required: true,
       placeholder: "What are your thoughts?",
-      class: "form-input w-full h-[10em] resize-none" 
+      class: "w-full overflow-y-auto resize-none border border-gray-100 rounded-3xl p-5 text-2xl focus:outline-none focus:border-2",
+      style: "scrollbar-width: none;",
+      data: { 
+        controller: "posts",
+        action: "input->posts#resize"
+      }
     %>
     <div class="flex w-full justify-end">
       <%= form.submit "post", class: "form-submit" %>
