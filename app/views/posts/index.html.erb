@@ -1,4 +1,4 @@
-<div class="flex flex-col justify-center items-center p-5">
+<div class="flex flex-col items-center p-5 gap-3">
   <%= form_with model: @post, class: "flex flex-col gap-2 p-5 bg-white rounded-4xl w-full max-w-[50em] shadow" do |form| %>
     <%= form.text_area :body, 
       required: true,
@@ -14,4 +14,22 @@
       <%= form.submit "post", class: "form-submit" %>
     </div>
   <% end %>
+  <ul class="flex flex-col gap-3 w-full max-w-[50em]">
+    <% @posts.each do |post| %>
+      <%= link_to post_path(post) do %>
+        <li class="card overflow-hidden">
+          <div class="flex flex-wrap justify-between w-full items-center gap-2">
+            <span class="flex flex-wrap gap-2 overflow-x-hidden">
+              <h3 class="text-xl font-bold"><%= post.user.username %></h3>
+              <h4 class="text-xl opacity-50"><%= post.user.email %></h4>
+            </span>
+            <p class="opacity-50 overflow-x-hidden"><%= post.created_at.strftime("%m-%d-%Y %I:%M%p ") %></p>
+          </div>
+          <div class="overflow-x-hidden">
+            <p class="text-2xl"><%= post.body %></p>
+          </div>
+        </li>
+      <% end %>
+    <% end%>
+  </ul>
 </div>

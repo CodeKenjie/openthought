@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   get "check_email", to: "availability#email"
   resources :users, only: [ :new, :create ]
   resources :sessions, only: [ :new, :create, :destroy ]
-  resources :posts, except: [ :new ]
+  resources :posts, except: [ :new, :edit ]
   root "posts#index"
 end

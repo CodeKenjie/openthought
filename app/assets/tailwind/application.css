@@ -34,10 +34,16 @@
 }
 
 .nav-bar {
-    @apply flex flex-wrap justify-between items-center w-full h-fit;
+    @apply sticky top-0 flex flex-wrap items-center w-full h-fit;
     @apply bg-white shadow px-5;
+    @apply z-999;
 }
 
 .icon {
     @apply w-[3em] h-[3em] opacity-50 hover:opacity-100;
+}
+
+.card {
+    @apply flex flex-col gap-2 p-5 bg-white w-full h-fit rounded-4xl;
+    @apply shadow;
 }
