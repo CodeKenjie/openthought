@@ -35,7 +35,7 @@
 
 .nav-bar {
     @apply flex flex-wrap justify-between items-center w-full h-fit;
-    @apply bg-white shadow;
+    @apply bg-white shadow px-5;
 }
 
 .icon {
