@@ -1,12 +1,14 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show update destroy ]
+  before_action :set_comment, only: %i[ show ]
 
   def index
     @post = Post.new
-    @posts = Post.includes(:user).order(created_at: :desc)
+    @posts = Post.includes(:user, comments: :user).order(created_at: :desc)
   end
 
   def show
+    @comments = @post.comments.includes(:user).order(created_at: :desc)
   end
 
   def create
@@ -37,6 +39,10 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.find(params[:id])
+  end
+
+  def set_comment
+    @comment = @post.comments.build
   end
 
   def post_params

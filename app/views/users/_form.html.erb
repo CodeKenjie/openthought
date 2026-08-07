@@ -87,18 +87,18 @@
             action: "input->registration#checkPassword"
           }
         %>
-        <button type="button" 
-          class="absolute right-4 w-[3rem] h-[3rem] cursor-pointer opacity-50 hover:opacity-100" 
-          data-action="click->registration#togglePassword"
-          data-target-field="password" 
-          data-icon-target="passIcon" 
-          data-show-icon="<%= asset_path('show.svg') %>" 
-          data-hide-icon="<%= asset_path('hide.svg') %>"
-        >
+          <button type="button" 
+            class="absolute right-4 w-[3rem] h-[3rem] cursor-pointer opacity-50 hover:opacity-100" 
+            data-action="click->registration#togglePassword"
+            data-target-field="password" 
+            data-icon-target="passIcon" 
+            data-show-icon="<%= asset_path('show.svg') %>" 
+            data-hide-icon="<%= asset_path('hide.svg') %>"
+          >
           <%= image_tag "show.svg",
             class: "w-full h-full",
             data: { registration_target: "passIcon" }
-          %>
+            %>
         </button>
       </div>
       <p data-registration-target="passwordCheckingLabel" class="px-5 text-sm font-bold"></p>

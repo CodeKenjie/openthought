@@ -59,7 +59,7 @@ export default class extends Controller {
             const email = this.emailTarget.value.trim()
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-            isValid = username !== "" && email !== "" && emailRegex.test(email)
+            isValid = username !== "" && email !== "" && emailRegex.test(email) && this.usernameAvailable && this.emailAvailable
         }
 
         if(this.currentStep === 2){
@@ -80,6 +80,7 @@ export default class extends Controller {
             }
             try {
                 const res = await fetch(`/check_username?username=${encodeURIComponent(username)}`)
+                if(!res.ok) throw new Error("Request failed")
                 const data = await res.json()
                 this.usernameCheckingLabelTarget.textContent = data.available ? "Available" : "Not Available"
                 this.usernameCheckingLabelTarget.style.color = data.available ? "green" : "red"
@@ -102,12 +103,14 @@ export default class extends Controller {
             }
 
             if (!emailRegex.test(email)) {
+                this.emailAvailable = false
                 this.emailCheckingLabelTarget.textContent = ""
                 return
             }
 
             try {
                 const res = await fetch(`/check_email?email=${encodeURIComponent(email)}`)
+                if(!res.ok) throw new Error("Request failed")
                 const data = await res.json()
                 this.emailCheckingLabelTarget.textContent = data.available ? "Available" : "Not Available"
                 this.emailCheckingLabelTarget.style.color = data.available ? "green" : "red"

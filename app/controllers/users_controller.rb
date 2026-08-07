@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   allow_unauthenticated_access only: %i[ new create ]
 
+  def show
+    @user = current_user
+  end
+
   def new
     @user = User.new
   end

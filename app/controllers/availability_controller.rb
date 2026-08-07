@@ -1,4 +1,5 @@
 class AvailabilityController < ApplicationController
+  allow_unauthenticated_access only: %i[ username email ]
   def username
     render json: {
       available: !User.exists?(username: params[:username])
