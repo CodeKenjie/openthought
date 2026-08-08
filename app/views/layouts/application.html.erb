@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Mini Project" %></title>
+    <title><%= content_for(:title) || "OpenThoght" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Mini Project">
@@ -44,7 +44,7 @@
     <% end %>
     <main class="relative w-screen h-screen">
       <% flash.each do |type, message| %>
-        <div class="absolute top-3 flex justify-center items-center w-full h-fit transition-opacity duration-200" data-controller="flash">
+        <div class="absolute top-3 flex justify-center items-center w-full h-fit" data-controller="flash">
           <span class=" p-3 text-xl text-white border w-fit rounded-xl <%= type == 'notice' ? 'bg-green-500 border-green-100' : 'bg-red-500 border-red-100' %>">
             <%= message %>
           </span>
