@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show update destroy ]
+  before_action :authorized_owner, only: %i[ update destroy ]
   before_action :set_comment, only: %i[ show ]
 
   def index
@@ -36,6 +37,12 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def authorized_owner
+    unless @post.user == current_user
+      redirect_to @post, error: "You are not authorize to that!"
+    end
+  end
 
   def set_post
     @post = Post.find(params[:id])

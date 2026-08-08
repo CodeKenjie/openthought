@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_post, only: %i[ create update destroy ]
   before_action :set_comment, only: %i[ update destroy ]
+  before_action :authorized_owner, only: %i[ update destroy ]
 
   def create
     @comment = @post.comments.build(comment_params)
@@ -27,6 +28,12 @@ class CommentsController < ApplicationController
   end
 
   private
+
+  def authorized_owner
+    unless @comment.user == current_user
+      redirect_to @post, error: "You are not authorized to do that!"
+    end
+  end
 
   def set_comment
     @comment = @post.comments.find(params[:id])
