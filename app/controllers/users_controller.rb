@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   allow_unauthenticated_access only: %i[ new create ]
 
   def show
-    @user = current_user
+    @user = User.find(params[:id])
   end
 
   def new
