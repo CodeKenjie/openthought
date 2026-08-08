@@ -10,6 +10,7 @@ export default class extends Controller {
         "commentBody",
         "commentEdit",
     ]
+
     connect() {
         this.resize()
     }
@@ -37,4 +38,7 @@ export default class extends Controller {
         body.classList.toggle("hidden")
     }
 
+    goBack() {
+        window.history.back()
+    }
 }
