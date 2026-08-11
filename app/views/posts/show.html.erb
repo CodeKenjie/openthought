@@ -1,7 +1,7 @@
 <div data-controller="posts" class="content-container">
   <div class="flex flex-col items-center p-5 g-3 rounded-4xl bg-white w-full max-w-[80em] shadow">
     <div class="w-full flex justify-between">
-      <%= link_to "#", data: { action: "click->posts#goBack" }, class: "icon" do %>
+      <%= link_to "", data: { action: "click->posts#goBack" }, class: "icon" do %>
         <svg viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="icomoon-ignore"> </g> <path d="M14.389 7.956v4.374l1.056 0.010c7.335 0.071 11.466 3.333 12.543 9.944-4.029-4.661-8.675-4.663-12.532-4.664h-1.067v4.337l-9.884-7.001 9.884-7zM15.456 5.893l-12.795 9.063 12.795 9.063v-5.332c5.121 0.002 9.869 0.26 13.884 7.42 0-4.547-0.751-14.706-13.884-14.833v-5.381z" fill="currentColor"> </path> </g></svg>
       <% end %>
       <div class="flex-1 flex justify-end flex-wrap gap-2">
@@ -106,7 +106,7 @@
                   class: "w-full text-xl resize-none focus:outline-none overflow-y-auto" 
                 %>
                 <div class="flex flex-wrap justify-end gap-2">
-                  <button class="btn opacity-80 hover:opacity-100" data-action="click->posts#editCommentToggle">cancel</button>
+                  <button class="btn opacity-80 hover:opacity-100" type="button" data-action="click->posts#editCommentToggle">cancel</button>
                   <%= form.submit "edit", class: "form-submit" %>
                 </div>
               <% end %>
@@ -135,9 +135,47 @@
                 </div>
               <% end %>
             </div>
-            <ul>
+            <ul class="flex flex-col gap-2">
               <% comment.replies.limit(3).each do |reply| %>
-                <li><%= reply.body %></li>
+                <li class="border-2 border-gray-100 p-2 rounded-2xl">
+                  <% if current_user.email == reply.user.email %>
+                    <div class="w-full flex justify-end gap-2">
+                      <button class="w-[1.5em] h-[1.5em] cursor-pointer" data-action="click->replies#editToggle">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                      </button>
+                      <%= button_to post_comment_reply_path(@post, comment, reply),
+                        method: :delete,
+                        style: "color: red",
+                        data: { turbo_confirm: "Are you sure you want to delete this post" },
+                        class: "flex w-[1.5em] h-[1.5em] w-full justify-end cursor-pointer" do
+                      %>
+                        <svg viewBox="0 -5 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>delete</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-518.000000, -1146.000000)" fill="currentColor"> <path d="M540.647,1159.24 C541.039,1159.63 541.039,1160.27 540.647,1160.66 C540.257,1161.05 539.623,1161.05 539.232,1160.66 L536.993,1158.42 L534.725,1160.69 C534.331,1161.08 533.692,1161.08 533.298,1160.69 C532.904,1160.29 532.904,1159.65 533.298,1159.26 L535.566,1156.99 L533.327,1154.76 C532.936,1154.37 532.936,1153.73 533.327,1153.34 C533.718,1152.95 534.352,1152.95 534.742,1153.34 L536.981,1155.58 L539.281,1153.28 C539.676,1152.89 540.314,1152.89 540.708,1153.28 C541.103,1153.68 541.103,1154.31 540.708,1154.71 L538.408,1157.01 L540.647,1159.24 L540.647,1159.24 Z M545.996,1146 L528.051,1146 C527.771,1145.98 527.485,1146.07 527.271,1146.28 L518.285,1156.22 C518.074,1156.43 517.983,1156.71 517.998,1156.98 C517.983,1157.26 518.074,1157.54 518.285,1157.75 L527.271,1167.69 C527.467,1167.88 527.723,1167.98 527.979,1167.98 L527.979,1168 L545.996,1168 C548.207,1168 550,1166.21 550,1164 L550,1150 C550,1147.79 548.207,1146 545.996,1146 L545.996,1146 Z" id="delete" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+                      <% end %>
+                    </div>
+                  <% end %>
+                  <div class="flex flex-col">
+                    <%= link_to user_path(comment.user.id), class: "flex flex-wrap items-center gap-2" do %>
+                      <h3 class="text-xl font-bold"><%= reply.user.username %></h3>
+                      <h3 class="text-xl opacity-50"><%= reply.user.email %></h3>
+                    <% end %>
+                    <div>
+                      <p class="text-sm opacity-50"><%= reply.created_at.strftime("%m-%d-%Y %I:%M%p") %></p>
+                    </div>
+                    <div>
+                      <%= form_with model: [@post, comment, reply], data: { replies_target: "replyEdit" }, class: "hidden" do |form| %>
+                        <%= form.textarea :body, 
+                          data: { controller: "textarea", action: "input->textarea#resize"},
+                          class: "w-full text-xl resize-none focus:outline-none overflow-y-auto" 
+                        %>
+                        <div class="flex flex-wrap justify-end gap-2">
+                          <button class="btn opacity-80 hover:opacity-100" type="button" data-action="click->replies#editToggle">cancel</button>
+                          <%= form.submit "edit", class: "form-submit" %>
+                        </div>
+                      <% end %>
+                      <p class="text-xl" data-replies-target="replyBody"><%= reply.body %></p>
+                    </div>
+                  </div>
+                </li>
               <% end %>
             </ul>
           </li>

@@ -9,16 +9,23 @@ class RepliesController < ApplicationController
     @reply.user = current_user
 
     if @reply.save
-      redirect_to @post, notice: "You successfully created a reply"
+      redirect_to @post
     else
       redirect_to @post, error: @reply.errors.full_messages.join(", ")
     end
   end
 
   def update
+    if @reply.update(reply_params)
+      redirect_to @post
+    else
+      redirect_to @post, error: @reply.errors.full_messages.join(", ")
+    end
   end
 
   def destroy
+    @reply.destroy
+    redirect_to @post
   end
 
   private
