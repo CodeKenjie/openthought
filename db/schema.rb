@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_07_080806) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_11_001025) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_080806) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "replies", force: :cascade do |t|
+    t.string "body"
+    t.bigint "comment_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["comment_id"], name: "index_replies_on_comment_id"
+    t.index ["post_id"], name: "index_replies_on_post_id"
+    t.index ["user_id"], name: "index_replies_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -59,5 +71,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_080806) do
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "posts", "users"
+  add_foreign_key "replies", "comments"
+  add_foreign_key "replies", "posts"
+  add_foreign_key "replies", "users"
   add_foreign_key "sessions", "users"
 end

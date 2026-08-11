@@ -9,11 +9,12 @@ class PostsController < ApplicationController
   end
 
   def show
-    @comments = @post.comments.includes(:user).order(created_at: :desc)
+    @comments = @post.comments.includes(:user, replies: :user).order(created_at: :desc)
   end
 
   def create
     @post = current_user.posts.build(post_params)
+
     if @post.save
       redirect_to root_path
     else
@@ -44,12 +45,12 @@ class PostsController < ApplicationController
     end
   end
 
-  def set_post
-    @post = Post.find(params[:id])
-  end
-
   def set_comment
     @comment = @post.comments.build
+  end
+
+  def set_post
+    @post = Post.find(params[:id])
   end
 
   def post_params
