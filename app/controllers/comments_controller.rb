@@ -1,7 +1,10 @@
 class CommentsController < ApplicationController
-  before_action :set_post, only: %i[ create update destroy ]
-  before_action :set_comment, only: %i[ update destroy ]
+  before_action :set_post, only: %i[ show create update destroy ]
+  before_action :set_comment, only: %i[ show update destroy ]
   before_action :authorized_owner, only: %i[ update destroy ]
+
+  def show
+  end
 
   def create
     @comment = @post.comments.build(comment_params)

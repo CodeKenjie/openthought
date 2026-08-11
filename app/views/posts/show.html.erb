@@ -110,7 +110,9 @@
                   <%= form.submit "edit", class: "form-submit" %>
                 </div>
               <% end %>
-              <p class="text-xl" data-posts-target="commentBody"><%= comment.body %></p>
+              <%= link_to "#" do %>
+                <p class="text-xl" data-posts-target="commentBody"><%= comment.body %></p>
+              <% end %>
             </div>
             <div>
               <button class="w-[2em] h-[2em] cursor-pointer" data-action="click->replies#replyToggle">
@@ -137,7 +139,7 @@
             </div>
             <ul class="flex flex-col gap-2">
               <% comment.replies.limit(3).each do |reply| %>
-                <li class="border-2 border-gray-100 p-2 rounded-2xl">
+                <li class="border-2 border-gray-200 p-2 rounded-2xl">
                   <% if current_user.email == reply.user.email %>
                     <div class="w-full flex justify-end gap-2">
                       <button class="w-[1.5em] h-[1.5em] cursor-pointer" data-action="click->replies#editToggle">
@@ -154,7 +156,7 @@
                     </div>
                   <% end %>
                   <div class="flex flex-col">
-                    <%= link_to user_path(comment.user.id), class: "flex flex-wrap items-center gap-2" do %>
+                    <%= link_to user_path(reply.user.id), class: "flex flex-wrap items-center gap-2" do %>
                       <h3 class="text-xl font-bold"><%= reply.user.username %></h3>
                       <h3 class="text-xl opacity-50"><%= reply.user.email %></h3>
                     <% end %>
