@@ -59,7 +59,7 @@ export default class extends Controller {
             const email = this.emailTarget.value.trim()
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-            isValid = username !== "" && email !== "" && emailRegex.test(email) && this.usernameAvailable && this.emailAvailable
+            isValid = username !== "" && email !== "" && emailRegex.test(email)
         }
 
         if(this.currentStep === 2){
