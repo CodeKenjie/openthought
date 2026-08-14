@@ -10,7 +10,8 @@ class SessionsController < ApplicationController
       start_new_session_for user
       redirect_to after_authentication_url
     else
-      redirect_to new_session_path, error: "Invalid email or password"
+      flash.now[:error] = "Incorrect username/email or password"
+      render :new, locals: { login: params[:login] }, status: :unprocessable_entity
     end
   end
 
